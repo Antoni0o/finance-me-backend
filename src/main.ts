@@ -9,6 +9,8 @@ async function bootstrap() {
   const config: ConfigService = app.get(ConfigService);
   const port: number = config.get<number>('PORT');
 
+  app.enableCors();
+
   const configDocs = new DocumentBuilder()
     .setTitle('FinanceMe API')
     .setDescription('The FinanceMe API Docs')
