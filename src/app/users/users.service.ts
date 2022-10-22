@@ -8,6 +8,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserResponseDto } from './dtos/user-response.dto';
 import { User } from './entities/user.entity';
+import { Transaction } from '../transactions/entities/transaction.entity';
 
 @Injectable()
 export class UsersService {
@@ -39,15 +40,18 @@ export class UsersService {
 
   async findAll(): Promise<Array<UserResponseDto>> {
     return await this.userMapper.mapArrayAsync(
-      await this.repository.find({}),
+      await this.repository.find({ relations: { transactions: true } }),
       User,
       UserResponseDto,
     );
   }
 
   async findOneById(id: string): Promise<UserResponseDto> {
-    const user = await this.repository.findOneBy({
-      id,
+    const user = await this.repository.findOne({
+      where: { id },
+      relations: {
+        transactions: true,
+      },
     });
 
     if (!user) {
@@ -58,8 +62,11 @@ export class UsersService {
   }
 
   async findOneByEmail(email: string): Promise<User> {
-    const user = await this.repository.findOneBy({
-      email,
+    const user = await this.repository.findOne({
+      where: { email },
+      relations: {
+        transactions: true,
+      },
     });
 
     if (!user) {

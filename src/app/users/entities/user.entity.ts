@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -11,6 +12,7 @@ import {
 import { hashSync } from 'bcrypt';
 import { v4 as uuid } from 'uuid';
 import { AutoMap } from '@automapper/classes';
+import { Transaction } from 'src/app/transactions/entities/transaction.entity';
 
 @Entity()
 export class User {
@@ -35,7 +37,7 @@ export class User {
     name: 'created_at',
     type: 'timestamp with time zone',
   })
-  created_at: Date;
+  createdAt: Date;
 
   @AutoMap()
   @UpdateDateColumn({
@@ -43,13 +45,16 @@ export class User {
     type: 'timestamp with time zone',
   })
   updatedAt: Date;
+  
+  @OneToMany(() => Transaction, (transaction) => transaction.user)
+  transactions: Transaction[];
 
   constructor(user?: Partial<User>) {
     this.id = user?.id;
     this.name = user?.id;
     this.email = user?.email;
     this.password = user?.password;
-    this.created_at = user?.created_at;
+    this.createdAt = user?.createdAt;
     this.updatedAt = user?.updatedAt;
   }
 
