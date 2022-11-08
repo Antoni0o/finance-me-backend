@@ -8,6 +8,7 @@ import { AuthModule } from './app/auth/auth.module';
 import { getEnvPath } from './common/helpers/env.helper';
 import { TypeOrmConfigService } from './common/typeorm/typeorm.service';
 import { TransactionsModule } from './app/transactions/transactions.module';
+import { AmountsModule } from './app/amounts/amounts.module';
 
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 
@@ -19,6 +20,7 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
     UsersModule,
     AuthModule,
     TransactionsModule,
+    AmountsModule,
   ],
 })
 export class AppModule {}

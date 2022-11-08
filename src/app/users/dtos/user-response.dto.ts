@@ -8,6 +8,7 @@ import {
   IsUUID,
   Length,
 } from 'class-validator';
+import { Transaction } from 'src/app/transactions/entities/transaction.entity';
 
 export class UserResponseDto {
   @ApiProperty()
@@ -42,4 +43,8 @@ export class UserResponseDto {
   @IsDateString()
   @IsNotEmpty()
   createdAt: Date;
+
+  @ApiProperty()
+  @AutoMap()
+  transactions?: Transaction[];
 }

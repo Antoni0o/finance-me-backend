@@ -2,7 +2,6 @@ import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { throttleTime } from 'rxjs';
 import { AppError } from 'src/common/errors/AppError';
 import { QueryFailedError, Repository } from 'typeorm';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
