@@ -1,7 +1,13 @@
-import { AutoMap } from "@automapper/classes";
-import { ApiProperty } from "@nestjs/swagger";
-import { IsDateString, IsNotEmpty, IsNumber, IsString, IsUUID } from "class-validator";
-import { TransactionType } from "../entities/transaction.entity";
+import { AutoMap } from '@automapper/classes';
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsDateString,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+} from 'class-validator';
+import { TransactionType } from '../entities/transaction.entity';
 
 export class TransactionResponseDTO {
   @ApiProperty()

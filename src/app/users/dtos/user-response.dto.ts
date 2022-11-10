@@ -8,7 +8,7 @@ import {
   IsUUID,
   Length,
 } from 'class-validator';
-import { Transaction } from 'src/app/transactions/entities/transaction.entity';
+import { TransactionResponseDTO } from 'src/app/transactions/dto/transaction-response.dto';
 
 export class UserResponseDto {
   @ApiProperty()
@@ -46,5 +46,5 @@ export class UserResponseDto {
 
   @ApiProperty()
   @AutoMap()
-  transactions?: Transaction[];
+  transactions: TransactionResponseDTO[];
 }

@@ -1,11 +1,22 @@
 import { HttpException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppError } from '../../common/errors/AppError';
+import { TransactionType } from '../transactions/entities/transaction.entity';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserResponseDto } from './dtos/user-response.dto';
+import { User } from './entities/user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+
+const user: User = new User({
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  password: 'password',
+  createdAt: new Date(1560807962),
+  updatedAt: new Date(1560807962),
+});
 
 const userResponse: UserResponseDto = {
   id: 'id',
@@ -13,6 +24,17 @@ const userResponse: UserResponseDto = {
   email: 'email',
   createdAt: new Date(1560807962),
   updatedAt: new Date(1560807962),
+  transactions: [
+    {
+      id: 'id',
+      description: 'description',
+      type: TransactionType.INCOME,
+      amount: 1000,
+      createdAt: new Date(1560807962),
+      updatedAt: new Date(1560807962),
+      user: user,
+    },
+  ],
 };
 
 const userResponseArray: Array<UserResponseDto> = [userResponse];
@@ -176,8 +198,8 @@ describe('UsersController', () => {
       //given
       const id = 'id';
       jest
-      .spyOn(service, 'findOneById')
-      .mockRejectedValue(new Error('Unknown Error'));
+        .spyOn(service, 'findOneById')
+        .mockRejectedValue(new Error('Unknown Error'));
 
       try {
         //when
@@ -194,8 +216,8 @@ describe('UsersController', () => {
       //given
       const id = 'id';
       jest
-      .spyOn(service, 'findOneById')
-      .mockRejectedValue(new AppError('Known Error', 400));
+        .spyOn(service, 'findOneById')
+        .mockRejectedValue(new AppError('Known Error', 400));
 
       try {
         //when

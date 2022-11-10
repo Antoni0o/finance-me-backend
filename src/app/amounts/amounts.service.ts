@@ -8,9 +8,9 @@ export class AmountsService {
   constructor(private readonly usersService: UsersService) {}
 
   async calcAllAmounts(userId: string): Promise<AmountResponseDTO> {
-    let expenses: number;
-    let incomes: number;
-    let amount: number;
+    let expenses = 0;
+    let incomes = 0;
+
     const user = await this.usersService.findOneById(userId);
 
     if (!user) {
@@ -18,20 +18,26 @@ export class AmountsService {
     }
 
     user.transactions.map((transaction) => {
-      if (transaction.type === 'income') {
-        incomes += Number(transaction.amount);
+      if (transaction.type == 'income') {
+        incomes += transaction.amount;
       }
 
-      if (transaction.type === 'expense') {
-        expenses += Number(transaction.amount);
+      if (transaction.type == 'expense') {
+        expenses += transaction.amount;
       }
     });
 
-    amount = incomes - expenses;
+    const amount = incomes - expenses;
 
     return new AmountResponseDTO(
-      String(incomes),
-      String(expenses),
+      incomes.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
+      expenses.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
       amount.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL',

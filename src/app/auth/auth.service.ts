@@ -25,7 +25,7 @@ export class AuthService {
 
   async validateUser(email: string, password: string) {
     let user: User;
-    
+
     try {
       user = await this.userService.findOneByEmail(email);
     } catch (error) {
@@ -33,7 +33,7 @@ export class AuthService {
     }
 
     const isPasswordValid = compareSync(password, user.password);
-    
+
     if (!isPasswordValid) return null;
 
     return user;

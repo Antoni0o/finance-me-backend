@@ -8,13 +8,14 @@ import { getMapperToken } from '@automapper/nestjs';
 import { QueryFailedError, Repository } from 'typeorm';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { AppError } from '../../common/errors/AppError';
+import { TransactionType } from '../transactions/entities/transaction.entity';
 
 const user: User = new User({
   id: 'id',
   name: 'name',
   email: 'email',
   password: 'password',
-  created_at: new Date(1560807962),
+  createdAt: new Date(1560807962),
   updatedAt: new Date(1560807962),
 });
 
@@ -24,6 +25,17 @@ const userResponse: UserResponseDto = {
   email: 'email',
   createdAt: new Date(1560807962),
   updatedAt: new Date(1560807962),
+  transactions: [
+    {
+      id: 'id',
+      description: 'description',
+      type: TransactionType.INCOME,
+      amount: 1000,
+      createdAt: new Date(1560807962),
+      updatedAt: new Date(1560807962),
+      user: user,
+    },
+  ],
 };
 
 describe('UsersService', () => {
@@ -126,19 +138,19 @@ describe('UsersService', () => {
         //given
         const id = 'id';
         jest.spyOn(repository, 'findOneBy').mockResolvedValue(user);
-  
+
         //when
         const result = await service.findOneById(id);
-  
+
         //then
         expect(result).toBe(userResponse);
         expect(repository.findOneBy).toHaveBeenCalledTimes(1);
       });
-  
+
       it('should throw an error', async () => {
         //given
         const id = 'id';
-  
+
         try {
           //when
           await service.findOneById(id);
@@ -148,26 +160,26 @@ describe('UsersService', () => {
           expect(repository.findOneBy).toHaveBeenCalledTimes(1);
         }
       });
-    })
+    });
 
     describe('By E-mail', () => {
       it('should find an user', async () => {
         //given
         const email = 'email@email.com';
         jest.spyOn(repository, 'findOneBy').mockResolvedValue(user);
-  
+
         //when
         const result = await service.findOneByEmail(email);
-  
+
         //then
         expect(result).toBe(user);
         expect(repository.findOneBy).toHaveBeenCalledTimes(1);
       });
-  
+
       it('should throw an error', async () => {
         //given
         const email = 'email@email.com';
-  
+
         try {
           //when
           await service.findOneByEmail(email);
@@ -177,7 +189,7 @@ describe('UsersService', () => {
           expect(repository.findOneBy).toHaveBeenCalledTimes(1);
         }
       });
-    })
+    });
   });
 
   describe('Update', () => {

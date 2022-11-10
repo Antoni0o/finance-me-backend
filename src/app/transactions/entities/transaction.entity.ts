@@ -1,10 +1,17 @@
-import { AutoMap } from "@automapper/classes";
-import { User } from "src/app/users/entities/user.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { AutoMap } from '@automapper/classes';
+import { User } from 'src/app/users/entities/user.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 export enum TransactionType {
-  INCOME = "income",
-  EXPENSE = "expense"
+  INCOME = 'income',
+  EXPENSE = 'expense',
 }
 
 @Entity()
@@ -22,7 +29,7 @@ export class Transaction {
   type: TransactionType;
 
   @AutoMap()
-  @Column({ nullable: false })
+  @Column({ type: 'float' })
   amount: number;
 
   @AutoMap()
@@ -40,7 +47,7 @@ export class Transaction {
   updatedAt: Date;
 
   @ManyToOne(() => User, (user) => user.transactions)
-  user: User
+  user: User;
 
   constructor(transaction?: Partial<Transaction>) {
     this.id = transaction?.id;

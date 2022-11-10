@@ -86,7 +86,7 @@ export class UsersController {
       }
 
       throw new HttpException(
-        'Internal Server Error',
+        `Internal Server Error. Error: ${e.message}`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -120,7 +120,7 @@ export class UsersController {
       }
 
       throw new HttpException(
-        'Internal Server Error',
+        `Internal Server Error. Error: ${e.message}`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -166,7 +166,7 @@ export class UsersController {
       }
 
       throw new HttpException(
-        'Internal Server Error',
+        `Internal Server Error. Error: ${e.message}`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -201,7 +201,7 @@ export class UsersController {
       }
 
       throw new HttpException(
-        'Internal Server Error',
+        `Internal Server Error. Error: ${e.message}`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

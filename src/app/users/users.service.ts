@@ -8,7 +8,6 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserResponseDto } from './dtos/user-response.dto';
 import { User } from './entities/user.entity';
-import { Transaction } from '../transactions/entities/transaction.entity';
 
 @Injectable()
 export class UsersService {
@@ -39,11 +38,15 @@ export class UsersService {
   }
 
   async findAll(): Promise<Array<UserResponseDto>> {
-    return await this.userMapper.mapArrayAsync(
-      await this.repository.find({ relations: { transactions: true } }),
-      User,
-      UserResponseDto,
-    );
+    const users = await this.repository.find({
+      relations: { transactions: true },
+    });
+
+    if (!users) {
+      throw new AppError('Users Not Found!', HttpStatus.NOT_FOUND);
+    }
+
+    return await this.userMapper.mapArrayAsync(users, User, UserResponseDto);
   }
 
   async findOneById(id: string): Promise<UserResponseDto> {
@@ -58,7 +61,9 @@ export class UsersService {
       throw new AppError('User Not Found!', HttpStatus.NOT_FOUND);
     }
 
-    return await this.userMapper.mapAsync(user, User, UserResponseDto);
+    delete user.password;
+
+    return user;
   }
 
   async findOneByEmail(email: string): Promise<User> {
@@ -90,13 +95,7 @@ export class UsersService {
 
     await this.repository.update(id, updateUserDto);
 
-    return await this.userMapper.mapAsync(
-      await this.repository.findOneBy({
-        id,
-      }),
-      User,
-      UserResponseDto,
-    );
+    return await this.userMapper.mapAsync(user, User, UserResponseDto);
   }
 
   async remove(id: string): Promise<void> {
