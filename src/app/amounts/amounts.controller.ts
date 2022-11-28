@@ -5,7 +5,9 @@ import {
   HttpStatus,
   Param,
   ParseUUIDPipe,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AppError } from 'src/common/errors/AppError';
 import { AmountsService } from './amounts.service';
 
@@ -14,6 +16,7 @@ export class AmountsController {
   constructor(private readonly amountsService: AmountsService) {}
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt'))
   getAllAmounts(@Param('id', new ParseUUIDPipe()) id: string) {
     try {
       return this.amountsService.calcAllAmounts(id);
