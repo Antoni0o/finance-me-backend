@@ -127,23 +127,6 @@ export class UsersController {
     }
   }
 
-  @Get('/token')
-  @UseGuards(AuthGuard('local'))
-  async findOneByToken(@Req() req: any) {
-    try {
-      return req.user.id;
-    } catch (e) {
-      if (e instanceof AppError) {
-        throw new HttpException(e.message, e.statusCode);
-      }
-
-      throw new HttpException(
-        `Internal Server Error. Error: ${e.message}`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-
   @ApiOperation({
     summary: 'Update an User',
   })

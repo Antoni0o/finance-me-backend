@@ -1,5 +1,6 @@
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -57,8 +58,13 @@ export class User {
     this.updatedAt = user?.updatedAt;
   }
 
+  @BeforeUpdate()
+  hashPasswordBeforeUpdate() {
+    this.password = hashSync(this.password, 8);
+  }
+
   @BeforeInsert()
-  hashPassword() {
+  hashPasswordBeforeInsert() {
     this.password = hashSync(this.password, 8);
   }
   createUuid() {
