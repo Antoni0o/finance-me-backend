@@ -8,6 +8,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserResponseDto } from './dtos/user-response.dto';
 import { User } from './entities/user.entity';
+import { hashSync } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -91,6 +92,10 @@ export class UsersService {
 
     if (!user) {
       throw new AppError('User Not Found!', HttpStatus.NOT_FOUND);
+    }
+
+    if (updateUserDto.password) {
+      updateUserDto.password = hashSync(updateUserDto.password, 8);
     }
 
     await this.repository.update(id, updateUserDto);
