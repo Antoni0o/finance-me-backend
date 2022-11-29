@@ -128,7 +128,7 @@ export class UsersController {
   }
 
   @Get('/token')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('local'))
   async findOneByToken(@Req() req: any) {
     try {
       return req.user.id;
