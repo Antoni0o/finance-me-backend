@@ -11,6 +11,7 @@ import {
   HttpCode,
   ParseUUIDPipe,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -21,6 +22,7 @@ import { UserResponseDto } from './dtos/user-response.dto';
 import { BadRequestSwaggerReturn } from '../../common/helpers/bad-request.swagger';
 import { InternalServerErrorSwaggerReturn } from '../../common/helpers/internal-server-error.swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtStrategy } from '../auth/strategies/jwt.strategy';
 
 @Controller('users')
 @ApiTags('users')
@@ -114,6 +116,23 @@ export class UsersController {
   async findOneById(@Param('id', new ParseUUIDPipe()) id: string) {
     try {
       return await this.usersService.findOneById(id);
+    } catch (e) {
+      if (e instanceof AppError) {
+        throw new HttpException(e.message, e.statusCode);
+      }
+
+      throw new HttpException(
+        `Internal Server Error. Error: ${e.message}`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Get('/token')
+  @UseGuards(AuthGuard('jwt'))
+  async findOneByToken(@Req() req: any) {
+    try {
+      return req.user;
     } catch (e) {
       if (e instanceof AppError) {
         throw new HttpException(e.message, e.statusCode);
