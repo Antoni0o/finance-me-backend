@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 import { TransactionType } from '../entities/transaction.entity';
 
 export class CreateTransactionDto {
@@ -16,4 +16,9 @@ export class CreateTransactionDto {
   @IsNumber()
   @IsNotEmpty()
   amount: number;
+
+  @ApiProperty()
+  @IsUUID()
+  @IsNotEmpty()
+  userId: string;
 }

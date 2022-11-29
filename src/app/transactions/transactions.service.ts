@@ -23,10 +23,11 @@ export class TransactionsService {
 
   async create(
     createTransactionDto: CreateTransactionDto,
-    userId: string,
   ): Promise<TransactionResponseDTO> {
     try {
-      const user = await this.userRepository.findOneBy({ id: userId });
+      const user = await this.userRepository.findOneBy({
+        id: createTransactionDto.userId,
+      });
       const transaction: Transaction = new Transaction();
 
       transaction.user = user;

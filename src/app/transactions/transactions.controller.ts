@@ -27,17 +27,9 @@ export class TransactionsController {
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  create(
-    @Body() createTransactionDto: CreateTransactionDto,
-    @Headers('Authorization') auth: string,
-  ) {
+  create(@Body() createTransactionDto: CreateTransactionDto) {
     try {
-      const authDecoded = this.jwtUtil.decode(auth);
-
-      return this.transactionsService.create(
-        createTransactionDto,
-        authDecoded.uuid,
-      );
+      return this.transactionsService.create(createTransactionDto);
     } catch (e) {
       if (e instanceof AppError) {
         throw new HttpException(e.message, e.statusCode);
