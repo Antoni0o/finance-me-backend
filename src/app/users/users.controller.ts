@@ -22,7 +22,6 @@ import { UserResponseDto } from './dtos/user-response.dto';
 import { BadRequestSwaggerReturn } from '../../common/helpers/bad-request.swagger';
 import { InternalServerErrorSwaggerReturn } from '../../common/helpers/internal-server-error.swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtStrategy } from '../auth/strategies/jwt.strategy';
 
 @Controller('users')
 @ApiTags('users')
@@ -132,7 +131,7 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   async findOneByToken(@Req() req: any) {
     try {
-      return req.user;
+      return req.user.id;
     } catch (e) {
       if (e instanceof AppError) {
         throw new HttpException(e.message, e.statusCode);
